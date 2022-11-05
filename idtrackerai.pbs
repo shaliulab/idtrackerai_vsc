@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+#PBS -l nodes=1:ppn=1
+#PBS -l walltime=03:00:00
+#PBS -l pmem=20gb
+#PBS -A default_project
+
+
+# Prepare working directory and conda environment
+module purge
+echo $CONDA_PREFIX
+source /data/leuven/333/vsc33399/jupyter/bin/activate
+conda activate idtrackerai
+
+# Need to pass:
+#     $VSC_SCRATCH
+#     $VIDEOS_FOLDER
+#     $EXPERIMENT
+#     $CHUNK
+#     $COMMAND
+echo $VSC_SCRATCH
+echo $VIDEOS_FOLDER
+echo $EXPERIMENT
+echo $CHUNK
+echo $COMMAND
+
+IDTRACKERAI_FOLDER=${VSC_SCRATCH}/${VIDEOS_FOLDER}/${EXPERIMENT}/idtrackerai
+cd ${IDTRACKERAI_FOLDER}
+
+# Run idtrackerai
+chmod +x session_$(printf %06d ${CHUNK})_${COMMAND}.sh && ./session_$(printf %06d ${CHUNK})_${COMMAND}.sh
